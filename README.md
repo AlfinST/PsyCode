@@ -1,2 +1,2 @@
 # PsyCode
-YOu wish you did this project 
+  Pseudo-Code to Source Code converter.

@@ -37,19 +37,36 @@ Language Model Library general
         must have body
         <body>
     arguments: everything in () separated by comma
-
+    return_type: 
+        <int>
+        <float>
+        <char>
+        <string>
+        <boolean>
+        <list> ?/ <array>
+        <tuple> ?/ //
+        <dictinary>
 </function>
 
 
 <keywords>
     predefined function?/
     ?/<options>
+    return_type: 
+        <int>
+        <float>
+        <char>
+        <string>
+        <boolean>
+        <list> ?/ <array>
+        <tuple> ?/ //
+        <dictinary>
 </keyword>
 
 
 <expression>
     datatypes:
-        <int>,<float>,<char>,<boolean>,<string>
+        <int>,<float>,<char>,<boolean>,<string>,<keyword>,<function>
     
     must have:
         <constant>

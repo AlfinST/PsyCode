@@ -1,0 +1,101 @@
+Language Model Library general
+
+<constant>
+    datatypes:
+        <int>
+        <float>
+        <char>
+        [   <string>   ]    
+        [   <boolean>  ]
+</constant>
+
+<variable>
+    variable_name: Valid name 
+    datatypes:
+        <int>
+        <float>
+        <char>
+        <string>
+        <boolean>
+        <list> ?/ <array>
+        <tuple> ?/ //
+        <dictinary>
+    [
+        modes:
+            <out>
+            <in>            // deafult
+            <in_out>
+    ]
+ </variable>
+
+<function>
+    function_name: variable_name but end with()
+    syntax:
+        // depends on language but ..
+        must have definition
+        <definition>
+        must have body
+        <body>
+    arguments: everything in () separated by comma
+
+</function>
+
+
+<keywords>
+    predefined function?/
+    ?/<options>
+</keyword>
+
+
+<expression>
+    datatypes:
+        <int>,<float>,<char>,<boolean>,<string>
+    
+    must have:
+        <constant>
+    as output
+</expression>
+
+
+<assignment>
+    <variable> = [<explicit_cast>]<expression>
+    restriction:
+        variable type == expression type
+<assignment>
+
+
+<condition>
+    <condition_expression>
+        type:
+            <constant>
+                <boolean>
+                    0   = false
+                    ^0  = true
+            </constant>
+
+            <variable>
+    </condition_expression>
+    
+    <if> <condition_expression>
+    <else>
+</condition>
+
+
+<loop>
+    type:
+    <for>
+        syntax: for //depends on language
+    </for>
+
+    <while>
+        syntax: while // depends on language 
+    </while>
+
+    [
+        <do_while>
+            syntax: do // depends on language
+        </do_while>
+    ]
+</loop>
+
+

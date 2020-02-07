@@ -1,118 +1,332 @@
-Language Model Library general
+//Grammar for defining XML intermediate representation
 
-<constant>
-    datatypes:
-        <int>
-        <float>
-        <char>
-        [   <string>   ]    
-        [   <boolean>  ]
-</constant>
+<main> </main> - represents the main body of program
+------
+<function>   </function> - represents function
+//within function
+<function_name> </function_name>
+<return_type></return_type>
+<parameter>
+   <type>   </type>
+   <name>   </name>
+</parameter>
+<body>  </body>
 
-<variable>
-    variable_name: Valid name 
-    datatypes:
-        <int>
-        <float>
-        <char>
-        <string>
-        <boolean>
-        <list> ?/ <array>
-        <tuple> ?/ //
-        <dictinary>
-    [
-        modes:
-            <out>
-            <in>            // deafult
-            <in_out>
-    ]
- </variable>
+-----
+<initalize>
+   <name> </name>
+   <type> </type>
 
-<function>
-    function_name: variable_name but end with()
-    syntax:
-        // depends on language but ..
-        must have definition
-        <definition>
-        must have body
-        <body>
-    arguments: everything in () separated by comma
-    return_type: 
-        <int>
-        <float>
-        <char>
-        <string>
-        <boolean>
-        <list> ?/ <array>
-        <tuple> ?/ //
-        <dictinary>
-</function>
+</initalize>
+----
+<assignment>
+   <op1> </op1>
+   <op2> </op1>
+</assignment>
 
+-------
+//Looping situations
+<repeat>
+ <for-each>
+   <item> </item>
+   <list> </list>
+ </for-each>
+
+ <while> 
+   <condition> 
+     <op1> </op1>
+        <op2> </op2>
+        <op> </op>
+     </condition>
+    <body>
+    </body>
+</while>
+
+<do> 
+ <body>
+ </body>
+ <while>
+ <condition> 
+     <op1> </op1>
+        <op2> </op2>
+        <op> </op>
+     </condition>
+  </while>
+</do>
+</repeat>
+-------
+// case
+
+<switch> 
+  <case>
+     //condition or variable or constant
+     <body>
+      
+     </body>
+  </case>
+  ..
+
+  <case>
+    <default>
+     <body>
+     </body>
+    </body>
+</case>
+</switch>
+-----
+<array>
+   <type>  </type>
+   <name>  </name>
+   <size>  </size>
+</array>
+
+<linked_list>
+  
+</linked_list>
+//array implementation
+<stack>
+  <type> </type>
+  <name> </name>
+ </stack> 
+</stack>
+
+<queue>
+ <type> </type>
+  <name> </name>
+ <type> </type>
+  <name> </name>
+
+</queue>
+
+
+<open_bracket>
+
+<close_bracket>
+----
+<location>
+  <variable>
+    <name> </name>
+    <type> </type>
+    <value> </value>
+  </variable>
+  <constant>
+      <name> </name>
+    <type> </type>
+    <value> </value>
+  </constant>
+</location>   
+
+
+---------
+<expression>
+  <location> </location>
+  <operator> </operator>
+  <location> </location>
+</expression>
+------
+
+
+ <expression> </expression>
+  <operator> <operator>
+ <expression> </expression>
+
+-----
+<pointer> 
+  <name> </name>
+  <order> </order>  //before and after 
+</pointer>
+-----------
+
+<file>
+  <name> </name>
+  <mode> </mode> // r,w,a,r+,w+,a+
+</file>
+
+<file_write>
+  <char></char>
+  <file_pointer> </file_pointer>
+</file_write>
+
+<file_close>
+</file_close>
+
+
+<file_read>
+  <file_pointer> </file_pointer>
+</file_read>
+
+<break> </break>
+<continue> </continue>
+
+
+<structure>
+
+</structure>
+
+<union>
+
+</union>
+
+<enum>
+
+</enum>
+
+<enum_var> <name> </name> </enum_var>
+
+
+-----
+<exit>
+
+</exit>
+---
+<abort>
+
+</abort>
+----
+<string>
+
+
+
+</string>
+----
+
+<power_func> </power_func>
+
+
+---
 
 <keywords>
-    predefined function?/
-    ?/<options>
-    return_type: 
-        <int>
-        <float>
-        <char>
-        <string>
-        <boolean>
-        <list> ?/ <array>
-        <tuple> ?/ //
-        <dictinary>
-</keyword>
-
-
-<expression>
-    datatypes:
-        <int>,<float>,<char>,<boolean>,<string>,<keyword>,<function>
+//C and C++
+<auto></auto>
+   <else></else>	
+   <long></long>	
+   <switch> </switch>
+   <break> </break>
+   <enum> </enum>
+   <register> </register>
+   <typedef> </typedef>
+   <case> </case>
+   <extern> </extern>
+   <return> </return>
+   <union> </union>
+   <char> </char>
+   <float> </float>
+   <short> </short>
+   <unsigned> </unsigned>
+   <const> </const>
+   <for>
+   
+  <init> 
+    <name> </name>
+    <type> </type>
+    <value> <value>
+  </init>
+  <terminate> 
+     <condition> 
+        <op1> </op1>
+        <op2> </op2>
+        <op> </op>
+     </condition>
+    </terminate>
+    <iter>
+          <name> </name>
+          <op> </op>
+          <val> </val>
+    </iter>
+    <body>
     
-    must have:
-        <constant>
-    as output
-</expression>
-
-
-<assignment>
-    <variable> = [<explicit_cast>]<expression>
-    restriction:
-        variable type == expression type
-<assignment>
-
-
-<condition>
-    <condition_expression>
-        type:
-            <constant>
-                <boolean>
-                    0   = false
-                    ^0  = true
-            </constant>
-
-            <variable>
-    </condition_expression>
-    
-    <if> <condition_expression>
-    <else>
-</condition>
-
-
-<loop>
-    type:
-    <for>
-        syntax: for //depends on language
+    </body>
     </for>
 
-    <while>
-        syntax: while // depends on language 
-    </while>
+   <signed> </signed>
+   <void> </void>
+   <continue> </continue>
+   <goto> </goto>
+   <sizeof> </sizeof>
+   <volatile> </volatile>
+   <default> </default>
 
-    [
-        <do_while>
-            syntax: do // depends on language
-        </do_while>
-    ]
-</loop>
+   <if>
+   <condition>
+     <condition> 
+     <op1> </op1>
+        <op2> </op2>
+        <op> </op>
+     </condition>
+     <body>
 
+     </body>
+    </if>
+   
+   <static> </static>
+   <while> </while>
+   <do> </do>
+   <int> </int>
+   <struct> </struct>
+   <double> </double>
+   ----
+   //Java
+   <abstract> </abstract>
+   <assert> </assert>
+   <boolean> </boolean>
+   <byte> </byte>
+   <catch> </catch>
+   <class> </class>
+   <enum> </enum>
+   <extends> </extends>
+   <final> </final>
+   <import> </import>
+   <finally> </finally>
+   <implements> </implements>
+   <instanceof> </instanceof>
+   <interface> </interface>
+   <long> </long>
+   <native> </native>
+   <package> </package>
+   <private> </private>
+   <protected> </protected>
+   <public></public>
+   <short> </short>
+   <static> </static>
+   <super> </super>
+   <synchronized> </synchronized>
+   <this> </this>
+   <throws> </throws>
+   <transient> </transient>
+   <try> </try>
+   <volatile> </volatile>
+-----
+//Python
+  <exec> </exec>
+  <not> </not>
+  <finally> </finally>
+  <or> </or>
+  <and></and>
+  <break> </break>
+  <pass></pass>
+  <continue> </continue>
+  <global> </global>
+  <raise> </raise>
+  <def> </def>
+  <del> </del>
+
+  <elif>
+  <condition>
+     <condition> 
+     <op1> </op1>
+        <op2> </op2>
+        <op> </op>
+     </condition>
+     <body>
+
+     </body>
+   </elif>
+
+  <in> </in>
+  <is> </is>
+  <except> </except>
+  <lambda> </lambda>
+  <yield> </yield>
+
+</keywords>
 

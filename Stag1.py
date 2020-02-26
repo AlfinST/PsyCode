@@ -7,13 +7,13 @@ def t_PROGRAM(t):
     end_List.append("program")
 
 def t_ASSIGN(t):
-    r'set'
+    r'set|assign|initiali[zs]e'
     print("<assign> ",end="",file=fo)
     line_List.append("assign")
 
 def t_TO(t):
     r'to'
-    print("=",end = "",file=fo)
+    print("= ",end = "",file=fo)
 
 def t_EQUALS(t):
     r'=='
@@ -60,7 +60,7 @@ def t_ENDSECTION(t):
         print("</{}>".format(end_tag),file=fo)
         
 def t_NUMBER(t):
-    r'\d+'
+    r'\d+[.\d+]*'
     print("<int> ",end="",file=fo)
 
 def t_IDENTIFIER(t):

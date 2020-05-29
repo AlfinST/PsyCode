@@ -80,10 +80,13 @@ def Variable(current,line,source):
     print("<variable>")
     variable_name = line[current][1]
     print("<variable_name>{}</variable_name>".format(variable_name))
-    # if checkNext(current,line,"OpenSquareOp"):
-    #     print("<index>")
     print("</variable>")
-    takeNext(current,line,source)
+    if source == "assignment":
+        print("<value>")
+        takeNext(current,line,0)
+        print("</value>")
+    else:
+        takeNext(current,line,source)
     pass
 
 
@@ -102,9 +105,6 @@ def Assignment(current,line):
     print("\n\n")
     print("<assignment>")
     Variable(current,line,"assignment")
-    print("<value>")
-    takeNext(current,line,0)
-    print("</value>")
     print("</assignment>")
 
 def If(current,line):

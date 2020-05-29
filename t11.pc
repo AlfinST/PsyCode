@@ -1,6 +1,11 @@
-program main
-	set a to 10
+program main (ark , man)
+	assign a to 10
 	set b to 20
+	initialise c = 0
 	c = a + b
-	print c
+	do while i < 10
+		do while j < i
+			print c
+		end loop
+	end loop
 end program

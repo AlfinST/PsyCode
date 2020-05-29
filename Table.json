@@ -1,0 +1,78 @@
+[
+    {
+        "intendLevel": 0,
+        "tag": "assignment",
+        "data": [
+            [
+                "identifier",
+                "x"
+            ],
+            [
+                "constant",
+                "5"
+            ]
+        ]
+    },
+    {
+        "intendLevel": 0,
+        "tag": "assignment",
+        "data": [
+            [
+                "identifier",
+                "y"
+            ],
+            [
+                "constant",
+                "10"
+            ]
+        ]
+    },
+    {
+        "intendLevel": 0,
+        "tag": "if",
+        "data": [
+            [
+                "identifier",
+                "x"
+            ],
+            [
+                "boolOp",
+                "g"
+            ],
+            [
+                "identifier",
+                "y"
+            ]
+        ]
+    },
+    {
+        "intendLevel": 1,
+        "tag": "print",
+        "data": [
+            [
+                "identifier",
+                "x"
+            ]
+        ]
+    },
+    {
+        "intendLevel": 0,
+        "tag": "else",
+        "data": [
+            [
+                "else",
+                "else"
+            ]
+        ]
+    },
+    {
+        "intendLevel": 1,
+        "tag": "print",
+        "data": [
+            [
+                "identifier",
+                "y"
+            ]
+        ]
+    }
+]

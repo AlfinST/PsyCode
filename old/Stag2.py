@@ -1,5 +1,4 @@
 import ply.lex as lex
-import re as R
 
 tokens =("PROGRAM","UNKNOWN","ASSIGN","EXP_ASSIGN","NEWLINE")
 
@@ -11,26 +10,15 @@ def t_PROGRAM(t):
 def t_ASSIGN(t):
     r'<assign>.+</assign>'
     text = t.value.split()
-    length = len(text)
     # print(text)
-    # print(length)
-
-    for eq,i in enumerate(text):
-        if i == '=':
-            break
-    # print(eq)
-    
     text.remove("<assign>")
     text.remove("</assign>")
-
     print("<assignment>\n\t<variable>")
     print("\t\t<var_name>{}</var_name>".format(Input[word_count+2]))
     increment(2)
     print("\t</variable>\n\t<value>\n\t\t<expression>")
     print("\t\t\t<int>{}</int>".format(Input[word_count+2]))
     increment(2)
-    # for i in range(eq+1,length):
-    #     word = text[word_count]
     print("\t\t</expression>\n\t</value>")
 
 def t_EXP_ASSIGN(t):

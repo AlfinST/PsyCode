@@ -37,14 +37,19 @@ def comma(current,line,source):
     takeNext(current,line,source)
 
 def OpenC(current,line,source):
+    # print("called",source)
     if source == "args":
         expression(current,line,source)
+    if source == "value":
+        print("<operator>(</operator>")
+        takeNext(current,line,source)
     pass
 
 def CloseC(current,line,source):
     if source == "expression":
         expression(current,line,"CloseC") 
-
+    if source == "value":
+        print("<operator>)</operator>")
 # def BodyBeg(current,line,source):
 #     print("<body>")
 
@@ -79,11 +84,11 @@ def Constant(current,line,source):
 def Variable(current,line,source):
     print("<variable>")
     variable_name = line[current][1]
-    print("<variable_name>{}</variable_name>".format(variable_name))
+    print("<var_name>{}</var_name>".format(variable_name))
     print("</variable>")
     if source == "assignment":
         print("<value>")
-        takeNext(current,line,0)
+        takeNext(current,line,"value")
         print("</value>")
     else:
         takeNext(current,line,source)
@@ -104,7 +109,8 @@ def Function(current,line):
 def Assignment(current,line):
     print("\n\n")
     print("<assignment>")
-    Variable(current,line,"assignment")
+    takeNext(current,line,"assignment",0)
+    # Variable(current,line,"assignment")
     print("</assignment>")
 
 def If(current,line):

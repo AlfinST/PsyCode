@@ -29,49 +29,19 @@
     },
     {
         "intendLevel": 0,
-        "tag": "if",
-        "data": [
-            [
-                "identifier",
-                "x"
-            ],
-            [
-                "boolOp",
-                "g"
-            ],
-            [
-                "identifier",
-                "y"
-            ]
-        ]
-    },
-    {
-        "intendLevel": 1,
         "tag": "print",
         "data": [
             [
-                "identifier",
-                "x"
-            ]
-        ]
-    },
-    {
-        "intendLevel": 0,
-        "tag": "else",
-        "data": [
+                "OpenOperator",
+                "("
+            ],
             [
-                "else",
-                "else"
-            ]
-        ]
-    },
-    {
-        "intendLevel": 1,
-        "tag": "print",
-        "data": [
+                "string",
+                "\"Hello World\""
+            ],
             [
-                "identifier",
-                "y"
+                "CloseOperator",
+                ")"
             ]
         ]
     }

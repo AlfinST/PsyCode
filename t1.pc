@@ -1,6 +1,3 @@
 Assign variable x as 5
 Assign variable y as 10
-if x > y
-	print x
-else
-	print y
+print("Hello World")

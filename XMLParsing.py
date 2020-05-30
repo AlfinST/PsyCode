@@ -1,5 +1,37 @@
 import xml.etree.ElementTree as ET
 
+#  for Rohan
+# def RecPy(Tree):
+#     children  = list(Tree)
+#     tag = Tree.tag
+#     txt = Tree.text
+
+#     if tag == "vaiable":
+#         for child in children:
+#             RecPy(child)
+
+#     if tag == "var_name":
+#         print(txt)
+
+#     if tag == "operator":
+#         # Which Operator? if its' g ge le l
+#         print(txt)
+
+#     if tag == "constant":
+#         print(txt)
+
+#     if tag == "if":
+#         print("if",end="")
+#         for child in children:
+#             RecPy(child)
+
+#     if tag == "condition":
+#         for child in children:
+#             RecPy(child)
+#         print(":")
+    
+    
+
 def RecursiveTagging(Tree,i):
     children = list(Tree)
     tag = Tree.tag
@@ -14,6 +46,7 @@ def RecursiveTagging(Tree,i):
         # to go deeper
         for child in children:
             RecursiveTagging(child,i+1)
+        
         # after this is end tag
         print("{}</{}>".format("   "*i,tag))
         

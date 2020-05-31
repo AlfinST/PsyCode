@@ -144,7 +144,7 @@ def t_OPERATOR(t):
 	#return t
 
 def t_CONSTANT(t):
-	r'[0-9]+'
+	r'[0-9]+(\.\d+){0,1}'
 	print("<constant>",end="")
 	addToLine(("constant",t.value))
 	#return t
@@ -190,7 +190,7 @@ def t_COMMA(t):
 	addToLine(("comma",t.value))
 
 def t_NEWLINE(t):
-	r'[\s\.]*\n'
+	r'[\s\.\r]*\n'
 	print(t.value,end="")
 	addToTable()
 
@@ -217,7 +217,7 @@ def intendChecker(line,intend_level):
 	print(new_intend_level,end=":")
 	if new_intend_level > intend_level:
 		print("\t"*(new_intend_level)+"<body>")
-		print(new_intend_level,end=":")
+		# print(new_intend_level,end=":")
 		# setSemantics("body")
 		# addToLine(("Beg","body"))
 		# addToTable()
@@ -250,6 +250,7 @@ if __name__ == "__main__":
 	with open("Table.json",'w') as table:
 		json.dump(jsonObj,table,indent=4)
 	
+	print("\n\n","#"*10)
 	for line in jsonObj:
 		print(line)
 	#	print(i)

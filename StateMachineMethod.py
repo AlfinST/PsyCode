@@ -15,12 +15,6 @@ def takeNext(current,line,source,update = 1):
     TagDict[line[current][0]](current,line,source)
     pass
 
-# def checkNext(pos,line,tag):
-#     answer = False
-#     if line[pos+1][0] == tag:
-#         answer = True
-#     return answer
-
 def expression(current,line,source):
     if source in ("args","print"):
         print("<expression>")
@@ -50,6 +44,7 @@ def CloseC(current,line,source):
         expression(current,line,"CloseC") 
     if source == "value":
         print("<operator>)</operator>")
+        takeNext(current,line,source)
 # def BodyBeg(current,line,source):
 #     print("<body>")
 
@@ -134,7 +129,13 @@ def Print(current,line):
     print("</print>")
     pass
 
-def While():
+def While(current,line):
+    print("\n\n")
+    print("<while>")
+    print("<condition>")
+    takeNext(current,line,"If",0)
+    print("</condition>")
+    print("</while>")
     pass
 
 def bodyTagger(old,newer):

@@ -7,7 +7,8 @@ def addToLine(tagPair):
 
 def setSemantics(semantic):
 	global lineSemantic
-	lineSemantic = semantic
+	if lineSemantic == "":
+		lineSemantic = semantic
 	
 def addToTable():
 	global intend_level
@@ -99,10 +100,10 @@ def t_RETURN(t):
 
 #Top level stuff
 def t_FUNCTION(t):
-	r'[Ff]unction'
-	print("<function>",end ="")
-	# addToLine(("function",t.value))
-	setSemantics("function")
+	r'[a-zA-Z][0-9a-zA-Z_]*\('
+	print("<function_call>",end ="")
+	addToLine(("function_call",t.value[:-1]))
+	setSemantics("function_call")
 	#return t
 
 def t_PROGRAM(t):
@@ -142,7 +143,7 @@ def t_BOOLOPERATOR(t):
 	print("<boolOp>",end="")
 	boolDict ={"<":"l",">":"g","==":"eq",\
 				"equals":"eq","<=":"le",">=":"ge",\
-				"and":"&&","or":"||","not":"!"}
+				"and":"&&","or":"||","not":"!="}
 	addToLine(("boolOp",boolDict[t.value.lower()]))
 
 def t_EQUAL(t):
@@ -181,12 +182,12 @@ def t_IDENTIFIER(t):
 def t_OPENSQUARE(t):
 	r'\['
 	print("<OpenSquareOp>",end="")
-	addToLine("OpenSquareOp",t.value)
+	addToLine(("OpenSquareOp",t.value))
 
 def t_CLOSESQUARE(t):
 	r'\]'
 	print("<CloseSquareOp>",end="")
-	addToLine("CloseSquareOp",t.value)
+	addToLine(("CloseSquareOp",t.value))
 
 def t_OPENCURLY(t):
 	r'\('

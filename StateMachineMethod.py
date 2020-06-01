@@ -1,18 +1,29 @@
 import json
 
+nex = 0 
+def afterIndex(current):
+    global nex
+    nex= max(nex,current)
 
 def takeNext(current,line,source,update = 1):
     current += update
-    # return line[current][0]
     if current >= len(line):
         # print("lol",source)
         if source == "expression":
             print("</expression>")
         return
+    
     TagDict = {"OpenOperator":OpenC,"identifier":Variable,"constant":Constant,"string":Str,"comma":comma,\
-                "CloseOperator":CloseC,"boolOp":BoolOp,"operator":Operator,"type":Type,\
-                "input":Input}
-    TagDict[line[current][0]](current,line,source)
+                "CloseOperator":CloseC,"OpenSquareOp":OpenSquare,"CloseSquareOp":CloseSquare,"boolOp":BoolOp,"operator":Operator,"type":Type,\
+                "input":Input,"function_call":Function}
+    
+    if source in ("variable","closeSquare"):
+        if line[current][0] == "OpenSquareOp":
+            TagDict[line[current][0]](current,line,source)    
+        else:
+            return  
+    else:
+        TagDict[line[current][0]](current,line,source)
     pass
 
 def expression(current,line,source):
@@ -23,7 +34,9 @@ def expression(current,line,source):
 
     if source == "CloseC":
         print("</expression>")
-        takeNext(current,line,"CLoseC")
+        afterIndex(current)
+        pass
+        # takeNext(current,line,"CLoseC")
     pass
 
 def comma(current,line,source):
@@ -45,9 +58,20 @@ def CloseC(current,line,source):
     if source == "value":
         print("<operator>)</operator>")
         takeNext(current,line,source)
-# def BodyBeg(current,line,source):
-#     print("<body>")
 
+def OpenSquare(current,line,source):
+    # print("ok")
+    if source in ("variable","closeSquare"):
+        print("<index>",end="")
+        takeNext(current,line,"index")
+    else:
+        takeNext(current,line,source)
+
+def CloseSquare(current,line,source):
+    if source == "index":
+        print("</index>")
+        takeNext(current,line,"closeSquare")
+        afterIndex(current)
 # take care of elif also take care of boolStrings
 
 def Input(current,line,source):
@@ -75,33 +99,42 @@ def Str(current,line,source):
 
 def Constant(current,line,source):
     c = line[current][1]
-    print("<constant>{}</constant>".format(c))
+    if source == "index":
+        print(c,end="")
+    else:
+        print("<constant>{}</constant>".format(c))
     takeNext(current,line,source)
 
 def Variable(current,line,source):
     print("<variable>")
     variable_name = line[current][1]
     print("<var_name>{}</var_name>".format(variable_name))
+    takeNext(current,line,"variable")
+    global nex
+    if nex > current:
+        current= nex
+        nex = 0
     print("</variable>")
     if source == "assignment":
         print("<value>")
         takeNext(current,line,"value")
         print("</value>")
     else:
-        takeNext(current,line,source)
-   
+        takeNext(current,line,"variable")
 
-def Function(current,line):
-    print("<function>")
+def Function(current,line,source=None):
+    print("<function_call>")
     function_name = line[current][1]
     print("<function_name>{}</function_name>".format(function_name))
     print("<args>")
-    takeNext(current,line,"args")
+    expression(current,line,"args")
     # print(tag)
-    print("<done><\done>")
     print("</args>")    
-    print("</function>")
-    
+    print("</function_call>")
+    global nex
+    current = nex
+    takeNext(current,line,source)
+
 def Assignment(current,line):
     print("\n\n")
     print("<assignment>")
@@ -161,7 +194,7 @@ if __name__ == "__main__":
         JFile = json.load(F)
     TagDict = {"function":Function,"assignment":Assignment,"if":If,\
 				"else":Else,"elif":Elif,"print":Print,"while":While,\
-                "OpenOperator":OpenC}
+                "OpenOperator":OpenC,"function_call":Function}
     print("<program>")
     old_indent = 0
     for line in JFile:

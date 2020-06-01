@@ -24,9 +24,9 @@ def addToTable():
 	jsonLine=list()
 	jsonObj.append(objDict)
 
-tokens = ("MAIN","VAR","WHILE","TYPE","INPUT","ISGEQ","ISGREATER","ISLEQ","ISLESSER","ASSIGNMENT","EQUALS","PRINT","RETURN",\
-		"FUNCTION","PROGRAM","IF","ELSE","BOOLOPERATOR","OPERATOR","CONSTANT","STRING","IDENTIFIERS","OPENSQUARE","CLOSESQUARE","OPENCURLY",\
-			"CLOSECURLY","COMMA","NEWLINE","SPACES","UNKNOWN") 
+tokens = ("MAIN","VAR","WHILE","TYPE","INPUT","ISGEQ","ISGREATER","ISLEQ","ISLESSER","ASSIGNMENT","PRINT","RETURN",\
+		"FUNCTION","PROGRAM","IF","ELSEIF","ELSE","EQUAL","BOOLSTRINGS","BOOLOPERATOR","OPERATOR","CONSTANT","STRING",\
+			"IDENTIFIERS","OPENSQUARE","CLOSESQUARE","OPENCURLY","CLOSECURLY","COMMA","NEWLINE","SPACES","UNKNOWN") 
 #Direct Replacemet
 
 def t_MAIN(t):
@@ -45,7 +45,7 @@ def t_WHILE(t):
 	setSemantics("while")
 
 def t_TYPE(t):
-	r'type\s[a-z]+'
+	r'type\s+[a-z]+'
 	print("<type>",end="")
 	addToLine(("type",t.value.split()[1]))
 
@@ -54,23 +54,28 @@ def t_INPUT(t):
 	print("<input>")
 	addToLine(("input",t.value))
 
+def t_SIEQUAL(t):
+	r'is\s+equal\s+to'
+	print("<BoolOp>",end="")
+	addToLine(("boolOp","eq"))
+
 def t_ISGEQ(t):
-	r'is\sgreater\sthan\sor\sequal\sto'
-	print("<boolOp>",end="")
+	r'is\s+greater\s+than\sor\sequal\s+to'
+	print("<BoolOp>",end="")
 	addToLine(("boolOp","ge"))
 
 def t_ISGREATER(t):
-	r'is\s[gG]reater\sthan'
+	r'is\s+[gG]reater\s+than'
 	print("<boolOp>",end="")
 	addToLine(("boolOp","g"))
 
 def t_ISLEQ(t):
-	r'is\s[lL]ess[er]*\sthan\sor\sequal\sto'
+	r'is\s+[lL]ess[er]*\s+than\s+or\s+equal\s+to'
 	print("<boolOp>",end="")
 	addToLine(("boolOp","le"))
 
 def t_ISLESSER(t):
-	r'is\s[lL]ess[er]*\sthan'
+	r'is\s+[lL]ess[er]*\s+than'
 	print("<boolOp>",end="")
 	addToLine(("boolOp","l"))
 
@@ -78,13 +83,6 @@ def t_ASSIGNMENT(t):
 	r'set|[Aa]ssign|initiali[zs]e'
 	print("<assign>",end="")
 	# addToLine(("assign",t.value))
-	setSemantics("assignment")
-	#return t
-
-def t_EQUALS(t):
-	r'=|[eE]quals|to|as'
-	print('= ',end ="")
-	# addToLine(("=",t.value))
 	setSemantics("assignment")
 	#return t
 
@@ -121,6 +119,11 @@ def t_IF(t):
 	# addToLine(("if",t.value))
 	setSemantics("if")
 
+def t_ELIF(t):
+	r'[Ee]lse\s+[Ii]f'
+	print("<elif>",end="")
+	setSemantics("elif")
+	
 def t_ELSE(t):
 	r'[Ee]lse'
 	print("<else>",end="")
@@ -129,13 +132,25 @@ def t_ELSE(t):
 
 
 #Mid level Stuff
+def t_BOOLSTRINGS(t):
+	r'is\s+divisible\s+by|is\s+a\smultiple\s+of'
+	print("<boolStr>",end="")
+	addToLine(("boolStr",t.value))
 
 def t_BOOLOPERATOR(t):
-	r'>=|<=|!=|<|>|='
+	r'>=|<=|!=|<|>|==|[Ee]quals|[aA]nd|[oO]r|[Nn]ot'
 	print("<boolOp>",end="")
 	boolDict ={"<":"l",">":"g","==":"eq",\
-				"<=":"le",">=":"ge"}
-	addToLine(("boolOp",boolDict[t.value]))
+				"equals":"eq","<=":"le",">=":"ge",\
+				"and":"&&","or":"||","not":"!"}
+	addToLine(("boolOp",boolDict[t.value.lower()]))
+
+def t_EQUAL(t):
+	r'=|to|as'
+	print('= ',end ="")
+	# addToLine(("=",t.value))
+	setSemantics("assignment")
+	#return t
 
 def t_OPERATOR(t):
 	r'\+|\-|\\|\*\*|\*'
@@ -151,10 +166,10 @@ def t_CONSTANT(t):
 
 #Bottom level 
 def t_STRING(t):
-	r'[\"\“](\\.|[^"\\])*[\"\”]'
+	# r'[\"\“](\\.|[^"\\|[^”])*["|”]'
+	r'([\"\“])(.|[^"“”])*[(\0)”"]'
 	print("<string>",end="")
-	addToLine(("string",t.value))
-	#return t
+	addToLine(("string",t.value[1:-1])) # decide if quotes are needed
 
 def t_IDENTIFIER(t):
 	r'[a-zA-Z][0-9a-zA-Z_]*'
@@ -217,17 +232,11 @@ def intendChecker(line,intend_level):
 	print(new_intend_level,end=":")
 	if new_intend_level > intend_level:
 		print("\t"*(new_intend_level)+"<body>")
-		# print(new_intend_level,end=":")
-		# setSemantics("body")
-		# addToLine(("Beg","body"))
-		# addToTable()
+
 	count = 0
 	while (new_intend_level+count) < intend_level:
-		print("\t"*(intend_level-count),"<done></done>")
+		# print("\t"*(intend_level-count),"<done></done>")
 		print("\t"*(intend_level-count),"</body>")
-		# setSemantics("body")
-		# addToLine(("End","body"))
-		# addToTable()
 		count+=1
 
 	return new_intend_level

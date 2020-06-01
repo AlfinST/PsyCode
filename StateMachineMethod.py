@@ -48,18 +48,20 @@ def CloseC(current,line,source):
 # def BodyBeg(current,line,source):
 #     print("<body>")
 
+# take care of elif also take care of boolStrings
 
 def Input(current,line,source):
     print("<input></input>")
 
 def Type(current,line,source):
     typ = line[current][1]
-    print("<type>{}</type>".format("typ"))
+    print("<type>{}</type>".format(typ))
     takeNext(current,line,source=source)
 
 def BoolOp(current,line,source):
     bop = line[current][1]
     print("<operator>{}</operator>".format(bop))
+    takeNext(current,line,source)
 
 def Operator(current,line,source):
     op = line[current][1]
@@ -87,8 +89,7 @@ def Variable(current,line,source):
         print("</value>")
     else:
         takeNext(current,line,source)
-    pass
-
+   
 
 def Function(current,line):
     print("<function>")
@@ -117,6 +118,14 @@ def If(current,line):
     print("</if>")
     pass
 
+def Elif(current,line):
+    print("\n\n")
+    print("<elif>")
+    print("<condition>")
+    takeNext(current,line,"if",0)
+    print("</condition>")
+    print("</elif>")
+
 def Else(current,line):
     print("\n\n")
     print("<else></else>")
@@ -142,7 +151,7 @@ def bodyTagger(old,newer):
     if old<newer:
         print("<body>")
     while(newer<old):
-        print("<done></done>")
+        # print("<done></done>")
         print("</body>")
         old -=1
     pass
@@ -151,7 +160,7 @@ if __name__ == "__main__":
     with open("Table.json") as F:
         JFile = json.load(F)
     TagDict = {"function":Function,"assignment":Assignment,"if":If,\
-				"else":Else,"print":Print,"while":While,\
+				"else":Else,"elif":Elif,"print":Print,"while":While,\
                 "OpenOperator":OpenC}
     print("<program>")
     old_indent = 0

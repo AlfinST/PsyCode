@@ -27,11 +27,10 @@ def takeNext(current,line,source,update = 1):
     pass
 
 def expression(current,line,source):
-    if source in ("args","print"):
+    nextUpdate = {"args":1,"print":0}
+    if source in nextUpdate:
         print("<expression>")
-        takeNext(current,line,"expression")
-        # print("</expression>")
-
+        takeNext(current,line,"expression",nextUpdate[source])
     if source == "CloseC":
         print("</expression>")
         afterIndex(current)
@@ -40,6 +39,7 @@ def expression(current,line,source):
     pass
 
 def comma(current,line,source):
+    # print("ok")
     print("</expression>\n<expression>")
     takeNext(current,line,source)
 
@@ -109,18 +109,22 @@ def Variable(current,line,source):
     print("<variable>")
     variable_name = line[current][1]
     print("<var_name>{}</var_name>".format(variable_name))
+    # to check if next is an index
     takeNext(current,line,"variable")
     global nex
     if nex > current:
         current= nex
         nex = 0
     print("</variable>")
+    # tag checker
     if source == "assignment":
         print("<value>")
         takeNext(current,line,"value")
         print("</value>")
     else:
-        takeNext(current,line,"variable")
+        takeNext(current,line,source)
+
+############ 
 
 def Function(current,line,source=None):
     print("<function_call>")
@@ -167,7 +171,7 @@ def Else(current,line):
 def Print(current,line):
     print("\n\n")
     print("<print>")
-    expression(current-1,line,"print")
+    expression(current,line,"print")
     print("</print>")
     pass
 
@@ -197,14 +201,20 @@ if __name__ == "__main__":
                 "OpenOperator":OpenC,"function_call":Function}
     print("<program>")
     old_indent = 0
+    isMain = False
     for line in JFile:
-        # print(line)
         tag = line["tag"]
         new_indent = line["intendLevel"]
         line = line["data"]
         bodyTagger(old_indent,new_indent)
         old_indent = new_indent
-        TagDict[tag](0,line)
+        if tag == "main":
+            print("<main>")
+            isMain = True
+        else:
+            TagDict[tag](0,line)
     bodyTagger(old_indent,0)
+    if isMain:
+        print("</main>")
     print("</program>")
     

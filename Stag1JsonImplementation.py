@@ -177,7 +177,7 @@ def t_BOOLSTRINGS(t):
 	addToLine(("boolStr",t.value))
 
 def t_BOOLOPERATOR(t):
-	r'>=|<=|!=|<|>|==|[Ee]quals|[aA]nd|[oO]r|[Nn]ot'
+	r'>=|<=|!=|<|>|==|[Ee]quals|[aA]nd|[oO]r|[Nn]ot\s+equal\s+to'
 	print("<boolOp>",end="")
 	boolDict ={"<":"l",">":"g","==":"eq",\
 				"equals":"eq","<=":"le",">=":"ge",\

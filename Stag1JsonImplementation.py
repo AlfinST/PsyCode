@@ -25,9 +25,10 @@ def addToTable():
 	jsonLine=list()
 	jsonObj.append(objDict)
 
-tokens = ("MAIN","VAR","WHILE","TYPE","INPUT","ISGEQ","ISGREATER","ISLEQ","ISLESSER","ASSIGNMENT","PRINT","RETURN",\
-		"FUNCTION","PROGRAM","IF","ELSEIF","ELSE","EQUAL","BOOLSTRINGS","BOOLOPERATOR","OPERATOR","CONSTANT","STRING",\
-			"IDENTIFIERS","OPENSQUARE","CLOSESQUARE","OPENCURLY","CLOSECURLY","COMMA","NEWLINE","SPACES","UNKNOWN") 
+tokens = ("MAIN","VAR","WHILE","TYPE","INPUT","INCREMENT","DECREMENT","ISGEQ","ISGREATER","ISLEQ","ISLESSER","ISDIVISIBLE","ISPRIME","ISFACTOR",\
+		"ASSIGNMENT","PRINT","RETURN","FUNCTION","PROGRAM","IF","ELSEIF","ELSE","EQUAL","BOOLSTRINGS","BOOLOPERATOR",\
+			"OPERATOR","CONSTANT","STRING","IDENTIFIERS","OPENSQUARE","CLOSESQUARE","OPENCURLY","CLOSECURLY","COMMA",\
+				"NEWLINE","SPACES","UNKNOWN") 
 #Direct Replacemet
 
 def t_MAIN(t):
@@ -51,9 +52,31 @@ def t_TYPE(t):
 	addToLine(("type",t.value.split()[1]))
 
 def t_INPUT(t):
-	r'with\sinput[(\staken)]*\sfrom\suser'
+	r'with\s+input[(\s+taken)]*\s+from\suser'
 	print("<input>")
 	addToLine(("input",t.value))
+
+def t_INCREMENT(t):
+	r'[Ii]ncrement\s+[a-zA-Z][0-9a-zA-Z_]*\s+by'
+	print("<UniqueAssignment><identifier>")
+	setSemantics("UAssignment")
+	_,var,_=t.value.split()
+	addToLine(("identifier",var))
+	addToLine(("operator","+"))
+
+def t_DECREMENT(t):
+	r'[Dd]ecrement\s+[a-zA-Z][0-9a-zA-Z_]*\s+by'
+	print("<UniqueAssignment><identifier>")
+	setSemantics("UAssignment")
+	_,var,_= t.value.split()
+	addToLine(("identifier",var))
+	addToLine(("operator","-"))
+
+def t_UASSIGNEMNT(t):
+	r'\+=|\-=|\*=|/=|%='
+	setSemantics("UAssignment")
+	print("<Uoperator>",end="")
+	addToLine(("operator",t.value[0]))
 
 def t_SIEQUAL(t):
 	r'is\s+equal\s+to'
@@ -79,6 +102,21 @@ def t_ISLESSER(t):
 	r'is\s+[lL]ess[er]*\s+than'
 	print("<boolOp>",end="")
 	addToLine(("boolOp","l"))
+
+def t_ISDIVISIBLE(t):
+	r'is\s+divisible\s+by|is\s+a\s+multiple\s+of'
+	print("<boolStr>",end="")
+	addToLine(("boolStr","d"))
+
+def t_ISPRIME(t):
+	r'is\s+prime'
+	print("<boolStr>",end="")
+	addToLine(("boolStr","p"))
+
+def t_ISFACTOR(t):
+	r'is\s+a\s+factor\s+of'
+	print("<boolStr>",end="")
+	addToLine(("boolStr","f"))
 
 def t_ASSIGNMENT(t):
 	r'set|[Aa]ssign|initiali[zs]e'
@@ -154,7 +192,7 @@ def t_EQUAL(t):
 	#return t
 
 def t_OPERATOR(t):
-	r'\+|\-|\\|\*\*|\*'
+	r'\+\+|\-\-|\+|\-|/|\*\*|\*|%'
 	print("<operator>",end="")
 	addToLine(("operator",t.value))
 	#return t
@@ -168,7 +206,7 @@ def t_CONSTANT(t):
 #Bottom level 
 def t_STRING(t):
 	# r'[\"\“](\\.|[^"\\|[^”])*["|”]'
-	r'([\"\“])(.|[^"“”])*[(\0)”"]'
+	r'([\"\“])(.|[^"“”])*[\0”"]'
 	print("<string>",end="")
 	addToLine(("string",t.value[1:-1])) # decide if quotes are needed
 

@@ -1,21 +1,22 @@
 import json
 
-nex = 0 
 def afterIndex(current):
     global nex
     nex= max(nex,current)
 
+def Nex():
+    global nex
+    return nex
+
 def takeNext(current,line,source,update = 1):
     current += update
     if current >= len(line):
-        # print("lol",source)
-        if source == "expression":
-            print("</expression>")
         return
     
-    TagDict = {"OpenOperator":OpenC,"identifier":Variable,"constant":Constant,"string":Str,"comma":comma,\
-                "CloseOperator":CloseC,"OpenSquareOp":OpenSquare,"CloseSquareOp":CloseSquare,"boolOp":BoolOp,"operator":Operator,"type":Type,\
-                "input":Input,"function_call":Function}
+    TagDict = {"OpenOperator":OpenC,"identifier":Variable,"constant":Constant,"string":Str,
+            "comma":comma,"CloseOperator":CloseC,"OpenSquareOp":OpenSquare,"boolStr":BoolStr,\
+            "CloseSquareOp":CloseSquare,"boolOp":BoolOp,"operator":Operator,"type":Type,\
+            "input":Input,"function_call":Function}
     
     if source in ("variable","closeSquare"):
         if line[current][0] == "OpenSquareOp":
@@ -30,31 +31,41 @@ def expression(current,line,source):
     nextUpdate = {"args":1,"print":0}
     if source in nextUpdate:
         print("<expression>")
-        takeNext(current,line,"expression",nextUpdate[source])
-    if source == "CloseC":
+        takeNext(current,line,"args",nextUpdate[source])
         print("</expression>")
-        afterIndex(current)
-        pass
-        # takeNext(current,line,"CLoseC")
-    pass
-
+        # afterIndex(current)
+        current = Nex()
+        takeNext(current,line,source)
+   
 def comma(current,line,source):
     # print("ok")
+    # print(source)
     print("</expression>\n<expression>")
     takeNext(current,line,source)
 
 def OpenC(current,line,source):
-    # print("called",source)
+    print("<operator>(</operator>")
     if source == "args":
-        expression(current,line,source)
+        takeNext(current,line,"OpenC")
+        current = Nex()
+        takeNext(current,line,source)
+      
     if source == "value":
-        print("<operator>(</operator>")
         takeNext(current,line,source)
     pass
 
 def CloseC(current,line,source):
-    if source == "expression":
-        expression(current,line,"CloseC") 
+    # print("Im here")
+    if source == "OpenC":
+        print("<operator>)</operator>")
+        afterIndex(current)
+        # takeNext(current,line,source)
+        return
+
+    if source == "args":
+        afterIndex(current)
+        return
+
     if source == "value":
         print("<operator>)</operator>")
         takeNext(current,line,source)
@@ -80,7 +91,13 @@ def Input(current,line,source):
 def Type(current,line,source):
     typ = line[current][1]
     print("<type>{}</type>".format(typ))
-    takeNext(current,line,source=source)
+    takeNext(current,line,source)
+
+def BoolStr(current,line,source):
+    # print("ok")
+    bstr = line[current][1]
+    print("<operator>{}</operator>".format(bstr))
+    takeNext(current,line,source)
 
 def BoolOp(current,line,source):
     bop = line[current][1]
@@ -106,19 +123,30 @@ def Constant(current,line,source):
     takeNext(current,line,source)
 
 def Variable(current,line,source):
-    print("<variable>")
     variable_name = line[current][1]
-    print("<var_name>{}</var_name>".format(variable_name))
-    # to check if next is an index
-    takeNext(current,line,"variable")
-    global nex
-    if nex > current:
-        current= nex
-        nex = 0
-    print("</variable>")
+    def ToPrintVar(current,line,source):
+        print("<variable>")
+        print("<var_name>{}</var_name>".format(variable_name))
+        # to check for index
+        takeNext(current,line,"variable")
+        global nex
+        if nex > current:
+            current= nex
+            afterIndex(0)
+        print("</variable>")
+    
+    # Print 
+    ToPrintVar(current,line,source)
     # tag checker
+
     if source == "assignment":
         print("<value>")
+        takeNext(current,line,"value")
+        print("</value>")
+
+    elif source == "Uassignment":
+        print("<value>")
+        ToPrintVar(current,line,source)
         takeNext(current,line,"value")
         print("</value>")
     else:
@@ -144,6 +172,13 @@ def Assignment(current,line):
     print("<assignment>")
     takeNext(current,line,"assignment",0)
     # Variable(current,line,"assignment")
+    print("</assignment>")
+
+def UAssignment(current,line):
+    print("\n\n")
+    print("<assignment>")
+    Variable(current,line,"Uassignment")
+
     print("</assignment>")
 
 def If(current,line):
@@ -198,11 +233,14 @@ if __name__ == "__main__":
         JFile = json.load(F)
     TagDict = {"function":Function,"assignment":Assignment,"if":If,\
 				"else":Else,"elif":Elif,"print":Print,"while":While,\
-                "OpenOperator":OpenC,"function_call":Function}
+                "OpenOperator":OpenC,"function_call":Function,\
+                    "UAssignment":UAssignment}
     print("<program>")
+    global nex
     old_indent = 0
     isMain = False
     for line in JFile:
+        nex = 0
         tag = line["tag"]
         new_indent = line["intendLevel"]
         line = line["data"]

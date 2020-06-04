@@ -30,13 +30,15 @@ def takeNext(current,line,source,update = 1):
 def expression(current,line,source):
     nextUpdate = {"args":1,"print":0}
     if source in nextUpdate:
-        print("<expression>")
-        takeNext(current,line,"args",nextUpdate[source])
-        print("</expression>")
-        # afterIndex(current)
-        current = Nex()
-        takeNext(current,line,source)
-   
+            print("<expression>")
+            takeNext(current,line,source,nextUpdate[source])
+            print("</expression>")
+            if source == "args":
+                return
+                # current = Nex()
+                # takeNext(current,line,source)
+
+
 def comma(current,line,source):
     # print("ok")
     # print(source)
@@ -64,6 +66,7 @@ def CloseC(current,line,source):
 
     if source == "args":
         afterIndex(current)
+        # print("end args")
         return
 
     if source == "value":
@@ -134,9 +137,9 @@ def Variable(current,line,source):
             current= nex
             afterIndex(0)
         print("</variable>")
-    
+        return current
     # Print 
-    ToPrintVar(current,line,source)
+    current = ToPrintVar(current,line,source)
     # tag checker
 
     if source == "assignment":
@@ -163,8 +166,7 @@ def Function(current,line,source=None):
     # print(tag)
     print("</args>")    
     print("</function_call>")
-    global nex
-    current = nex
+    current = Nex()
     takeNext(current,line,source)
 
 def Assignment(current,line):
@@ -219,6 +221,9 @@ def While(current,line):
     print("</while>")
     pass
 
+def Main(current,line):
+    print("<main>")
+
 def bodyTagger(old,newer):
     if old<newer:
         print("<body>")
@@ -234,7 +239,7 @@ if __name__ == "__main__":
     TagDict = {"function":Function,"assignment":Assignment,"if":If,\
 				"else":Else,"elif":Elif,"print":Print,"while":While,\
                 "OpenOperator":OpenC,"function_call":Function,\
-                    "UAssignment":UAssignment}
+                    "UAssignment":UAssignment,"main":Main}
     print("<program>")
     global nex
     old_indent = 0
@@ -255,4 +260,5 @@ if __name__ == "__main__":
     if isMain:
         print("</main>")
     print("</program>")
+
     

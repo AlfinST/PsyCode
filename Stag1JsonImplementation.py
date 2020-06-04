@@ -32,7 +32,7 @@ tokens = ("MAIN","VAR","WHILE","TYPE","INPUT","INCREMENT","DECREMENT","ISGEQ","I
 #Direct Replacemet
 
 def t_MAIN(t):
-	r'[(function)|(program)]+\s+[mM]ain[(\(\))]+'
+	r'[(function)|(program)]+\s+[mM]ain[(\(\))]*'
 	print("<main>")
 	setSemantics("main")
 	addToLine(("main","main"))

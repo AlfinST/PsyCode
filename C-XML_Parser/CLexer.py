@@ -8,7 +8,7 @@ def addToLine(tagPair):
 
 def setSemantics(semantic):
 	global lineSemantic
-	if lineSemantic == "":
+	if lineSemantic == "" or semantic == 'Input':
 		lineSemantic = semantic
 	
 def addToTable():
@@ -95,7 +95,7 @@ def t_DECLARATION(t):
 	setSemantics(sem)
 	addToLine(("Type",Type))
 	addToLine(("VarList",var_list))
-
+	
 def t_VAR(t):
 	r'[vV]ariable|of'
 	print("",end="")
@@ -113,7 +113,8 @@ def t_TYPE(t):
 def t_INPUT(t):
 	r'with\s+input[(\s+taken)]*\s+from\suser'
 	print("<input>")
-	addToLine(("input",t.value))
+	setSemantics("Input")
+	# addToLine(("input",t.value))
 
 def t_INCREMENT(t):
 	r'[Ii]ncrement\s+[a-zA-Z][0-9a-zA-Z_]*\s+by'

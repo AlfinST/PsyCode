@@ -2,12 +2,12 @@ import json
 
 def SymTab(opt,var_list,Type=None):
     global symbolTable
+    # print(symbolTable)
     if opt == "add":
         for var in var_list:
             symbolTable[var] = Type
     elif opt == "get":
-        variable = var_list
-        return SymTab[variable]
+        return symbolTable[var_list]
         
 def afterIndex(current):
     global nex
@@ -46,7 +46,6 @@ def expression(current,line,source):
                 return
                 # current = Nex()
                 # takeNext(current,line,source)
-
 
 def comma(current,line,source):
     # print("ok")
@@ -97,8 +96,11 @@ def CloseSquare(current,line,source):
         afterIndex(current)
 # take care of elif also take care of boolStrings
 
-def Input(current,line,source):
-    print("<input></input>")
+def Input(current,line,source = None):
+    print("\n\n")
+    print("<input>")
+    takeNext(current,line,"Input",0)
+    print("</input>")
 
 def Type(current,line,source):
     typ = line[current][1]
@@ -138,10 +140,10 @@ def Variable(current,line,source):
     variable_name = line[current][1]
     def ToPrintVar(current,line,source):
         print("<variable>")
+        if source in ("print","Input"):
+            print("<var_type>{}</var_type>".format(SymTab("get",variable_name)))
         print("<var_name>{}</var_name>".format(variable_name))
         # to check for index
-        # print("\t\tvariable_name is",variable_name)
-        # Type = SymTab("get",variable_name)
         takeNext(current,line,"variable")
         global nex
         if nex > current:
@@ -252,10 +254,14 @@ def Definition(current,line):
     Type = line[current][1]
     var_declare_list = line[current+1][1]
     assign_list = line[current+2][1]
+    # print(Type)
+    # print(var_declare_list)
+    # print(assign_list)
     print("<type>{}</type>".format(Type))
     # simple declarations:
     for var in var_declare_list:
-        SymTab("add",var.lstrip().rstrip(),Type)
+        # print("variable",var.lstrip())
+        SymTab("add",[var.lstrip().rstrip()],Type)
         print("<variable>")
         print("<var_name>{}</var_name>".format(var))
         print("</variable>")
@@ -263,14 +269,15 @@ def Definition(current,line):
     global lexer
     for var in assign_list:
         var = var.split("=")
-        SymTab("add",var[0].lstrip().rstrip(),Type)
+        # print(":",var[0].lstrip().rstrip(),":")
+        SymTab("add",[var[0].lstrip().rstrip()],Type)
         print("<assignment>")
         print("<variable>")
-        print("<var_name>{}<var_name>".format(var[0]))
+        print("<var_name>{}</var_name>".format(var[0].lstrip().rstrip()))
         print("</variable>")
         print("<value>")
         print("<variable>")
-        print("<var_name>{}<var_name>".format(var[1]))
+        print("<var_name>{}</var_name>".format(var[1].lstrip().rstrip()))
         print("</variable>")
         print("</value>")
         print("</assignment>")
@@ -296,8 +303,9 @@ if __name__ == "__main__":
     TagDict = {"function":Function,"assignment":Assignment,"if":If,\
 				"else":Else,"elif":Elif,"print":Print,"while":While,\
                 "OpenOperator":OpenC,"function_call":Function,\
-                    "UAssignment":UAssignment,"main":Main,\
-                        "Declaration":Declaration,"Definition":Definition}
+                "UAssignment":UAssignment,"main":Main,\
+                "Declaration":Declaration,"Definition":Definition,\
+                "Input":Input}
     print("<program>")
     symbolTable = dict()
     global nex

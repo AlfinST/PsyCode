@@ -141,8 +141,8 @@ def Variable(current,line,source):
     def ToPrintVar(current,line,source):
         print("<variable>")
         if source in ("print","Input"):
-            print("<var_type>{}</var_type>".format(SymTab("get",variable_name)))
-        print("<var_name>{}</var_name>".format(variable_name))
+            print("<variable_type>{}</variable_type>".format(SymTab("get",variable_name)))
+        print("<variable_name>{}</variable_name>".format(variable_name))
         # to check for index
         takeNext(current,line,"variable")
         global nex
@@ -240,11 +240,12 @@ def Declaration(current,line):
     Type = line[current][1]
     var_list = line[current+1][1]
     
+
     # SymTab("add",var_list,Type)
-    print("<type>{}</type>".format(Type))
+    print("<variable_type>{}</variable_type>".format(Type))
     for var in var_list[::-1]:
         print("<variable>")
-        print("<var_name>{}</var_name>".format(var))
+        print("<variable_name>{}</variable_name>".format(var))
         print("</variable>")
         if "[" in var:
             var.split("[")
@@ -262,13 +263,13 @@ def Definition(current,line):
     # print(Type)
     # print(var_declare_list)
     # print(assign_list)
-    print("<type>{}</type>".format(Type))
+    print("<variable_type>{}</variable_type>".format(Type))
     # simple declarations:
     for var in var_declare_list:
         # print("variable",var.lstrip())
         SymTab("add",[var.lstrip().rstrip()],Type)
         print("<variable>")
-        print("<var_name>{}</var_name>".format(var))
+        print("<variable_name>{}</variable_name>".format(var))
         print("</variable>")
     # assignments
     global lexer
@@ -278,11 +279,11 @@ def Definition(current,line):
         SymTab("add",[var[0].lstrip().rstrip()],Type)
         print("<assignment>")
         print("<variable>")
-        print("<var_name>{}</var_name>".format(var[0].lstrip().rstrip()))
+        print("<variable_name>{}</variable_name>".format(var[0].lstrip().rstrip()))
         print("</variable>")
         print("<value>")
         print("<variable>")
-        print("<var_name>{}</var_name>".format(var[1].lstrip().rstrip()))
+        print("<variable_name>{}</variable_name>".format(var[1].lstrip().rstrip()))
         print("</variable>")
         print("</value>")
         print("</assignment>")

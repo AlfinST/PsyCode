@@ -69,7 +69,7 @@ def t_VARDEFINE(t):
 	if len(declare_list)>0 and len(assign_list) == 0:
 		addToTable() 
 def t_DECLARATION(t):
-	r'(?:[Dd]eclare\s+)?(?:a|an)?\s*(?:int|[Ii]ntegers?|Floats?|floats?|chars?|[cC]haracters?)\s+(?:variable[s]?)?\s*([a-zA-Z][a-zA-Z0-9_]*)(?:(?:\s*(?:,|and)\s*)?[a-zA-Z][a-zA-Z0-9_]*)*'
+	r'(?:[Dd]eclare\s+)?(?:a|an)?\s*(?:int|[Ii]ntegers?|Floats?|floats?|chars?|[cC]haracters?)\s+(?:variables?|arrays?)?\s*([a-zA-Z][a-zA-Z0-9_]*(?:\[\d+\])?)(?:(?:\s*(?:,|and)\s*)?([a-zA-Z][a-zA-Z0-9_]*(?:\[\d+\])?))*'
 	print("<var_declaration>")
 	ip = t.value
 	ip = ip.replace(","," , ")
@@ -86,7 +86,7 @@ def t_DECLARATION(t):
 	typeDict= {"int":"int","integers":"int","integer":"int","float":"float","floats":"float","char":"char","character":"char","characters":"char"}
 	for i in range(L-1,start-1,-1):
 
-		if ip[i].lower() in ("variable","variables","and",","):
+		if ip[i].lower() in ("variable","variables","and",",","array","arrays"):
 			continue
 		elif ip[i].lower() in ("int","integers","integer","float","floats","char","characters"):
 			Type = typeDict[ip[i].lower()]

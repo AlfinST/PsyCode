@@ -239,12 +239,17 @@ def Declaration(current,line):
     print("<var_declare>")
     Type = line[current][1]
     var_list = line[current+1][1]
-    SymTab("add",var_list,Type)
+    
+    # SymTab("add",var_list,Type)
     print("<type>{}</type>".format(Type))
     for var in var_list[::-1]:
         print("<variable>")
         print("<var_name>{}</var_name>".format(var))
         print("</variable>")
+        if "[" in var:
+            var.split("[")
+            var = var[0]
+        SymTab("add",[var],Type)
     print("</var_declare>")
     pass
 

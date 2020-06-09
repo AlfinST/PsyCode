@@ -138,7 +138,7 @@ def t_RETURN(t):
 
 #Top level stuff
 def t_FUNCTION(t):
-	r'[a-zA-Z][0-9a-zA-Z_]*\('
+	r'([cC]all\s[fF]unction)?\s*[a-zA-Z][0-9a-zA-Z_]*\('
 	print("<function_call>",end ="")
 	addToLine(("function_call",t.value[:-1]))
 	setSemantics("function_call")
@@ -153,18 +153,18 @@ def t_PROGRAM(t):
 	#return t
 
 def t_IF(t):
-	r'[iI]f'
+	r'[iI]f:?'
 	print("<if>",end="")
 	# addToLine(("if",t.value))
 	setSemantics("if")
 
 def t_ELIF(t):
-	r'[Ee]lse\s+[Ii]f'
+	r'([Ee]lse\s+[Ii]f|[eElif]):?'
 	print("<elif>",end="")
 	setSemantics("elif")
 	
 def t_ELSE(t):
-	r'[Ee]lse'
+	r'[Ee]lse:?'
 	print("<else>",end="")
 	addToLine(("else",t.value))
 	setSemantics("else")

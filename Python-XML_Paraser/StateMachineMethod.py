@@ -156,6 +156,20 @@ def Variable(current,line,source):
         takeNext(current,line,source)
 
 ############ 
+def FunctionDef(current,line):
+    print("<function>")
+    fname = line[current][1]
+    args = line[current+1][1]
+    print("<function_name>{}</function_name>".format(fname))
+    print("<args>")
+    for var in args:
+        print("<expression>")
+        print("<variable>")
+        print("<var_name>{}</var_name>".format(var))
+        print("</variable>")
+        print("</expression>")
+    print("</args>")
+    print("</function>")
 
 def Function(current,line,source=None):
     print("<function_call>")
@@ -236,7 +250,7 @@ def bodyTagger(old,newer):
 if __name__ == "__main__":
     with open("Table.json") as F:
         JFile = json.load(F)
-    TagDict = {"function":Function,"assignment":Assignment,"if":If,\
+    TagDict = {"function":FunctionDef,"assignment":Assignment,"if":If,\
 				"else":Else,"elif":Elif,"print":Print,"while":While,\
                 "OpenOperator":OpenC,"function_call":Function,\
                     "UAssignment":UAssignment,"main":Main}

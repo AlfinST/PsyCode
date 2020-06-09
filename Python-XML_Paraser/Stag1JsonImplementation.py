@@ -137,6 +137,18 @@ def t_RETURN(t):
 	addToLine(("return",t.value))
 
 #Top level stuff
+
+def t_FUNCITON(t):
+	r'(?:[cC]reate\sa)?\s*function\s*[a-zA-Z][a-zA-Z0-9_]*(?:\(.*\))'
+	ip = t.value[:-1]
+	print("<function>")
+	setSemantics("function")
+	ip = ip.split("(")
+	fname = ip[0].split()[-1]
+	args = ip[1].split(",")
+	addToLine(("Function_name",fname))
+	addToLine(("Arguments_list",args))
+
 def t_FUNCTIONCALL(t):
 	r'([cC]all\s[fF]unction)?\s*[a-zA-Z][0-9a-zA-Z_]*\('
 	print("<function_call>",end ="")

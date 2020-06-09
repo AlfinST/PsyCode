@@ -26,7 +26,7 @@ def addToTable():
 	jsonObj.append(objDict)
 
 tokens = ("MAIN","VAR","WHILE","TYPE","INPUT","INCREMENT","DECREMENT","ISGEQ","ISGREATER","ISLEQ","ISLESSER","ISDIVISIBLE","ISPRIME","ISFACTOR",\
-		"ASSIGNMENT","PRINT","RETURN","FUNCTION","PROGRAM","IF","ELSEIF","ELSE","EQUAL","BOOLSTRINGS","BOOLOPERATOR",\
+		"ASSIGNMENT","PRINT","RETURN","FUNCTIONCALL","PROGRAM","IF","ELSEIF","ELSE","EQUAL","BOOLSTRINGS","BOOLOPERATOR",\
 			"OPERATOR","CONSTANT","STRING","IDENTIFIERS","OPENSQUARE","CLOSESQUARE","OPENCURLY","CLOSECURLY","COMMA",\
 				"NEWLINE","SPACES","UNKNOWN") 
 #Direct Replacemet
@@ -137,7 +137,7 @@ def t_RETURN(t):
 	addToLine(("return",t.value))
 
 #Top level stuff
-def t_FUNCTION(t):
+def t_FUNCTIONCALL(t):
 	r'([cC]all\s[fF]unction)?\s*[a-zA-Z][0-9a-zA-Z_]*\('
 	print("<function_call>",end ="")
 	addToLine(("function_call",t.value[:-1]))

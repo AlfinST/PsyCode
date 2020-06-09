@@ -153,13 +153,13 @@ def t_PROGRAM(t):
 	#return t
 
 def t_IF(t):
-	r'[iI]f:?'
+	r'[iI]f'
 	print("<if>",end="")
 	# addToLine(("if",t.value))
 	setSemantics("if")
 
 def t_ELIF(t):
-	r'([Ee]lse\s+[Ii]f|[eElif]):?'
+	r'([Ee]lse\s+[Ii]f|[eE]lif)'
 	print("<elif>",end="")
 	setSemantics("elif")
 	

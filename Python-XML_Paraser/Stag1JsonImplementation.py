@@ -253,8 +253,9 @@ def t_SPACES(t):
 	print(t.value,end="")
 
 def t_UNKNOWN(t):
-	r'.*[\(\)=+<]'
-	print("$",t,end ="")
+	r'.*[:\(\)=+<]'
+	# print("$",t,end ="")
+	print("")
 	# addToLine(t.value)
 	return 
 

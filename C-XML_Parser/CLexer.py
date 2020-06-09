@@ -27,7 +27,7 @@ def addToTable():
 	jsonObj.append(objDict)
 
 tokens = ("MAIN","VARDEFINE","DECLARATION","WHILE","TYPE","INPUT","INCREMENT","DECREMENT","ISGEQ","ISGREATER","ISLEQ","ISLESSER","ISDIVISIBLE","ISPRIME","ISFACTOR",\
-		"ASSIGNMENT","PRINT","RETURN","FUNCTION","PROGRAM","IF","ELSEIF","ELSE","EQUAL","BOOLSTRINGS","BOOLOPERATOR",\
+		"ASSIGNMENT","PRINT","RETURN","FUNCTIONDEF","FUNCTIONCALL","PROGRAM","IF","ELSEIF","ELSE","EQUAL","BOOLSTRINGS","BOOLOPERATOR",\
 			"OPERATOR","CONSTANT","STRING","IDENTIFIERS","OPENSQUARE","CLOSESQUARE","OPENCURLY","CLOSECURLY","COMMA",\
 				"NEWLINE","SPACES","UNKNOWN") 
 #Direct Replacemet
@@ -197,7 +197,20 @@ def t_RETURN(t):
 	addToLine(("return",t.value))
 
 #Top level stuff
-def t_FUNCTION(t):
+def t_FUNCTONDEF(t):
+	r'(int|float|char|string)\s*[a-zA-Z][a-zA-Z0-9_]*\s*\(.*\)'
+	ip = t.value[:-1]
+	ip =ip.split("(")
+	args = ip[1]
+	ip = ip[0].split()
+	ret_type = ip[0]
+	fname = ip[1]
+	setSemantics("function")
+	addToLine(("Return_Type",ret_type))
+	addToLine(("function_name",fname))
+	addToLine(("Arguments",args))
+	
+def t_FUNCTIONCALL(t):
 	r'[a-zA-Z][0-9a-zA-Z_]*\('
 	print("<function_call>",end ="")
 	addToLine(("function_call",t.value[:-1]))

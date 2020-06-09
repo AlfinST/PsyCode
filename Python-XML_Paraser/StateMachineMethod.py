@@ -159,15 +159,16 @@ def Variable(current,line,source):
 def FunctionDef(current,line):
     print("<function>")
     fname = line[current][1]
-    args = line[current+1][1]
+    # args = line[current+1][1]
     print("<function_name>{}</function_name>".format(fname))
     print("<args>")
-    for var in args:
-        print("<expression>")
-        print("<variable>")
-        print("<var_name>{}</var_name>".format(var))
-        print("</variable>")
-        print("</expression>")
+    # for var in args:
+    #     print("<expression>")
+    #     print("<variable>")
+    #     print("<var_name>{}</var_name>".format(var))
+    #     print("</variable>")
+    #     print("</expression>")
+    expression(current,line,"args")
     print("</args>")
     print("</function>")
 

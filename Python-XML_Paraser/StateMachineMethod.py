@@ -202,8 +202,9 @@ def UAssignment(current,line):
 def LAssignment(current,line):
     print("\n\n")
     # list_name = line[current][1]
+    print("<assignment>")
     Variable(current,line,"list")
-
+    print("</assignment>")
 def If(current,line):
     print("\n\n")
     print("<if>")

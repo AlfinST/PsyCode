@@ -179,7 +179,7 @@ def t_ISFACTOR(t):
 	addToLine(("boolStr","f"))
 
 def t_ASSIGNMENT(t):
-	r'set|[Aa]ssign|initiali[zs]e'
+	r'set|[Aa]ssign|initiali[zs]e|[Aa]ccept'
 	print("<assign>",end="")
 	# addToLine(("assign",t.value))
 	setSemantics("assignment")
@@ -209,7 +209,7 @@ def t_FUNCTONDEF(t):
 	addToLine(("Return_Type",ret_type))
 	addToLine(("function_name",fname))
 	addToLine(("Arguments",args))
-	
+
 def t_FUNCTIONCALL(t):
 	r'[a-zA-Z][0-9a-zA-Z_]*\('
 	print("<function_call>",end ="")

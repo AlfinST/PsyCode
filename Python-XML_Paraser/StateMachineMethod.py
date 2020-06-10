@@ -152,7 +152,7 @@ def Variable(current,line,source):
         takeNext(current,line,"value")
         print("</value>")
 
-    if source == "list":
+    elif source == "list":
         print("<value>")
         print("<list>")
         expression(current,line,"list")
@@ -193,7 +193,7 @@ def Function(current,line,source=None):
 def Assignment(current,line):
     print("\n\n")
     print("<assignment>")
-    takeNext(current,line,"assignment",0)
+    Variable(current,line,"assignment")
     # Variable(current,line,"assignment")
     print("</assignment>")
 

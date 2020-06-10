@@ -239,6 +239,12 @@ def While(current,line):
 def Main(current,line):
     print("<main>")
 
+def Return(current,line):
+    print("\n\n")
+    print("<return>")
+    expression(current,line,"print")
+    print("</return>")
+
 def bodyTagger(old,newer):
     if old<newer:
         print("<body>")
@@ -251,10 +257,11 @@ def bodyTagger(old,newer):
 if __name__ == "__main__":
     with open("Table.json") as F:
         JFile = json.load(F)
-    TagDict = {"function":FunctionDef,"assignment":Assignment,"if":If,\
+    TagDict = { "function":FunctionDef,"assignment":Assignment,"if":If,\
 				"else":Else,"elif":Elif,"print":Print,"while":While,\
                 "OpenOperator":OpenC,"function_call":Function,\
-                    "UAssignment":UAssignment,"main":Main}
+                "UAssignment":UAssignment,"main":Main,"return":Return\
+                }
     print("<program>")
     global nex
     old_indent = 0

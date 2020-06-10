@@ -134,7 +134,7 @@ def t_RETURN(t):
 	r'[Rr]eturn'
 	print("<return>",end="")
 	setSemantics("return")
-	addToLine(("return",t.value))
+	# addToLine(("return",t.value))
 
 #Top level stuff
 

@@ -26,7 +26,7 @@ def addToTable():
 	jsonObj.append(objDict)
 
 tokens = ("MAIN","VAR","WHILE","TYPE","INPUT","INCREMENT","DECREMENT","ISGEQ","ISGREATER","ISLEQ","ISLESSER","ISDIVISIBLE","ISPRIME","ISFACTOR",\
-		"ASSIGNMENT","PRINT","RETURN","FUNCTION","FUNCTIONCALL","PROGRAM","IF","ELSEIF","ELSE","EQUAL","BOOLSTRINGS","BOOLOPERATOR",\
+		"LIST_ASSIGNMENT","WITH_VALUES","ASSIGNMENT","PRINT","RETURN","FUNCTION","FUNCTIONCALL","PROGRAM","IF","ELSEIF","ELSE","EQUAL","BOOLSTRINGS","BOOLOPERATOR",\
 			"OPERATOR","CONSTANT","STRING","IDENTIFIERS","OPENSQUARE","CLOSESQUARE","OPENCURLY","CLOSECURLY","COMMA",\
 				"NEWLINE","SPACES","UNKNOWN") 
 #Direct Replacemet
@@ -118,8 +118,18 @@ def t_ISFACTOR(t):
 	print("<boolStr>",end="")
 	addToLine(("boolStr","f"))
 
+def t_LIST_ASSIGNMENT(t):
+	r'(set|[Aa]ssign|initiali[zs]e|accept)\s*a\s*list'
+	print("<assignment><list>")
+	setSemantics("L_assignment")
+
+def t_WITH_VAUES(t):
+	r'with\svalues?'
+	print("<values|",end ="")
+	# ip = t.value.split()[2:]
+	# addToLine(("values"))
 def t_ASSIGNMENT(t):
-	r'set|[Aa]ssign|initiali[zs]e'
+	r'set|[Aa]ssign|initiali[zs]e|accept'
 	print("<assign>",end="")
 	# addToLine(("assign",t.value))
 	setSemantics("assignment")

@@ -147,6 +147,13 @@ def Variable(current,line,source):
         takeNext(current,line,"value")
         print("</value>")
 
+    if source == "list":
+        print("<value>")
+        print("<list>")
+        expression(current,line,"args")
+        print("</list>")
+        print("</value>")
+
     elif source == "Uassignment":
         print("<value>")
         ToPrintVar(current,line,source)
@@ -162,12 +169,6 @@ def FunctionDef(current,line):
     # args = line[current+1][1]
     print("<function_name>{}</function_name>".format(fname))
     print("<args>")
-    # for var in args:
-    #     print("<expression>")
-    #     print("<variable>")
-    #     print("<var_name>{}</var_name>".format(var))
-    #     print("</variable>")
-    #     print("</expression>")
     expression(current,line,"args")
     print("</args>")
     print("</function>")
@@ -197,6 +198,11 @@ def UAssignment(current,line):
     Variable(current,line,"Uassignment")
 
     print("</assignment>")
+
+def LAssignment(current,line):
+    print("\n\n")
+    # list_name = line[current][1]
+    Variable(current,line,"list")
 
 def If(current,line):
     print("\n\n")
@@ -260,7 +266,7 @@ if __name__ == "__main__":
     TagDict = { "function":FunctionDef,"assignment":Assignment,"if":If,\
 				"else":Else,"elif":Elif,"print":Print,"while":While,\
                 "OpenOperator":OpenC,"function_call":Function,\
-                "UAssignment":UAssignment,"main":Main,"return":Return\
+                "UAssignment":UAssignment,"L_assignment":LAssignment,"main":Main,"return":Return\
                 }
     print("<program>")
     global nex

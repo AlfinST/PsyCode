@@ -193,7 +193,7 @@ def t_BOOLSTRINGS(t):
 def t_BOOLOPERATOR(t):
 	r'>=|<=|!=|<|>|==|[Ee]quals|[aA]nd|[oO]r|[Nn]ot\s+equal\s+to|[Nn]ot'
 	print("<boolOp>",end="")
-	boolDict ={"<":"l",">":"g","==":"eq",\
+	boolDict ={"<":"l",">":"g","==":"eq","!=":"!=",\
 				"equals":"eq","<=":"le",">=":"ge",\
 				"and":"and","or":"or","not equal to":"!=","not":"!="}
 	addToLine(("boolOp",boolDict[t.value.lower()]))

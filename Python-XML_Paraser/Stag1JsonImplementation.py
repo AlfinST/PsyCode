@@ -41,6 +41,16 @@ def t_VAR(t):
 	r'[vV]ariable|of'
 	print("",end="")
 
+def t_BREAK(t):
+	r'[Bb]reak'
+	setSemantics("UnconditionalControl")
+	addToLine(("break","break"))
+
+def t_CONTINUE(t):
+	r'[cC]ontinue'
+	setSemantics("UnconditionalControl")
+	addToLine(("continue","continue"))
+
 def t_WHILE(t):
 	r'while'
 	print("<while>",end="")

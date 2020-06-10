@@ -251,6 +251,11 @@ def While(current,line):
     print("</while>")
     pass
 
+def UnControl(current,line):
+    ip = line[current][1]
+    print(f"<{ip}></{ip}>")
+
+
 def Main(current,line):
     print("<main>")
 
@@ -275,7 +280,8 @@ if __name__ == "__main__":
     TagDict = { "function":FunctionDef,"assignment":Assignment,"if":If,\
 				"else":Else,"elif":Elif,"print":Print,"while":While,\
                 "OpenOperator":OpenC,"function_call":Function,\
-                "UAssignment":UAssignment,"L_assignment":LAssignment,"main":Main,"return":Return\
+                "UAssignment":UAssignment,"L_assignment":LAssignment,"main":Main,"return":Return,\
+                "UnconditionalControl":UnControl\
                 }
     print("<program>")
     global nex

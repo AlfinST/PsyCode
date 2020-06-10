@@ -195,7 +195,7 @@ def t_BOOLOPERATOR(t):
 	print("<boolOp>",end="")
 	boolDict ={"<":"l",">":"g","==":"eq",\
 				"equals":"eq","<=":"le",">=":"ge",\
-				"and":"and","or":"or","not equal to":"not","not":"not"}
+				"and":"and","or":"or","not equal to":"!=","not":"!="}
 	addToLine(("boolOp",boolDict[t.value.lower()]))
 
 def t_EQUAL(t):

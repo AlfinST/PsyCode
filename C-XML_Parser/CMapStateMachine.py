@@ -290,6 +290,10 @@ def Definition(current,line):
 
     print("</var_define>")
 
+def Return(current,line):
+    print("<return>")
+    expression(current,line,"print")
+    print("</return>")
 
 def Main(current,line):
     print("<main>")
@@ -311,7 +315,7 @@ if __name__ == "__main__":
                 "OpenOperator":OpenC,"function_call":Function,\
                 "UAssignment":UAssignment,"main":Main,\
                 "Declaration":Declaration,"Definition":Definition,\
-                "Input":Input}
+                "Input":Input,"return":Return}
     print("<program>")
     symbolTable = dict()
     global nex

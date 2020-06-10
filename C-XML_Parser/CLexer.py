@@ -192,9 +192,8 @@ def t_PRINT(t):
 
 def t_RETURN(t):
 	r'[Rr]eturn'
-	print("<return>",end="")
+	print("<return>",end ="")
 	setSemantics("return")
-	addToLine(("return",t.value))
 
 #Top level stuff
 def t_FUNCTONDEF(t):

@@ -26,7 +26,7 @@ def addToTable():
 	jsonObj.append(objDict)
 
 tokens = ("MAIN","VAR","WHILE","TYPE","INPUT","INCREMENT","DECREMENT","ISGEQ","ISGREATER","ISLEQ","ISLESSER","ISDIVISIBLE","ISPRIME","ISFACTOR",\
-		"LIST_ASSIGNMENT","WITH_VALUES","ASSIGNMENT","PRINT","RETURN","FUNCTION","FUNCTIONCALL","PROGRAM","IF","ELSEIF","ELSE","EQUAL","BOOLSTRINGS","BOOLOPERATOR",\
+		"LIST_ASSIGNMENT","L_EQUAL_ASSIGN","WITH_VALUES","ASSIGNMENT","PRINT","RETURN","FUNCTION","FUNCTIONCALL","PROGRAM","IF","ELSEIF","ELSE","EQUAL","BOOLSTRINGS","BOOLOPERATOR",\
 			"OPERATOR","CONSTANT","STRING","IDENTIFIERS","OPENSQUARE","CLOSESQUARE","OPENCURLY","CLOSECURLY","COMMA",\
 				"NEWLINE","SPACES","UNKNOWN") 
 #Direct Replacemet
@@ -123,11 +123,18 @@ def t_LIST_ASSIGNMENT(t):
 	print("<assignment><list>")
 	setSemantics("L_assignment")
 
+def t_L_EQUAL_ASSIGN(t):
+	r'[a-zA-Z0-9][a-zA-Z0-9]*\s*=\s*\['
+	print("<assignment><list>")
+	addToLine(("list_name",t.value.split("=")[0].rstrip().lstrip()))
+	setSemantics("L_assignment")
+
 def t_WITH_VAUES(t):
 	r'with\svalues?'
 	print("<values|",end ="")
 	# ip = t.value.split()[2:]
 	# addToLine(("values"))
+
 def t_ASSIGNMENT(t):
 	r'set|[Aa]ssign|initiali[zs]e|accept'
 	print("<assign>",end="")

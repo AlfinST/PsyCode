@@ -28,7 +28,7 @@ def takeNext(current,line,source,update = 1):
     pass
 
 def expression(current,line,source):
-    nextUpdate = {"args":1,"print":0}
+    nextUpdate = {"args":1,"print":0,"list":1}
     if source in nextUpdate:
             print("<expression>")
             takeNext(current,line,source,nextUpdate[source])
@@ -84,8 +84,13 @@ def OpenSquare(current,line,source):
 def CloseSquare(current,line,source):
     if source == "index":
         print("</index>")
-        takeNext(current,line,"closeSquare")
         afterIndex(current)
+        takeNext(current,line,"closeSquare")
+    
+    if source == "list":
+        afterIndex(current)
+        takeNext(current,line,"closeSquare")
+        
 # take care of elif also take care of boolStrings
 
 def Input(current,line,source):
@@ -150,7 +155,7 @@ def Variable(current,line,source):
     if source == "list":
         print("<value>")
         print("<list>")
-        expression(current,line,"args")
+        expression(current,line,"list")
         print("</list>")
         print("</value>")
 
@@ -205,6 +210,9 @@ def LAssignment(current,line):
     print("<assignment>")
     Variable(current,line,"list")
     print("</assignment>")
+    current = Nex()
+    # takeNext(current,line,"list")
+
 def If(current,line):
     print("\n\n")
     print("<if>")

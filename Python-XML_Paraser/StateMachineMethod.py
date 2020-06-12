@@ -13,7 +13,7 @@ def takeNext(current,line,source,update = 1):
     if current >= len(line):
         return
     
-    TagDict = {"OpenOperator":OpenC,"identifier":Variable,"constant":Constant,"string":Str,
+    TagDict = {"OpenOperator":OpenC,"identifier":Variable,"constant":Constant,"string":Str,\
             "comma":comma,"CloseOperator":CloseC,"OpenSquareOp":OpenSquare,"boolStr":BoolStr,\
             "CloseSquareOp":CloseSquare,"boolOp":BoolOp,"operator":Operator,"type":Type,\
             "input":Input,"function_call":Function}

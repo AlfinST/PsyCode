@@ -26,8 +26,8 @@ def addToTable():
 	jsonLine=list()
 	jsonObj.append(objDict)
 
-tokens = ("MAIN","VARDEFINE","DECLARATION","WHILE","TYPE","INPUT","INCREMENT","DECREMENT","ISGEQ","ISGREATER","ISLEQ","ISLESSER","ISDIVISIBLE","ISPRIME","ISFACTOR",\
-		"ASSIGNMENT","PRINT","RETURN","FUNCTIONDEF","FUNCTIONCALL","PROGRAM","IF","ELSEIF","ELSE","EQUAL","BOOLSTRINGS","BOOLOPERATOR",\
+tokens = ("MAIN","VARDEFINE","DECLARATION","WHILE","TYPE","INPUT","INCREMENT","DECREMENT","ISGEQ","ISGREATER","ISLEQ","ISLESSER","ISDIVISIBLE","ISMULTIPLE","ISPRIME","ISFACTOR",\
+		"ASSIGNMENT","PRINT","RETURN","FUNCTIONDEF","FUNCTIONCALL","PROGRAM","IF","ELSEIF","ELSE","EQUAL","BOOLOPERATOR",\
 			"OPERATOR","CONSTANT","STRING","IDENTIFIERS","OPENSQUARE","CLOSESQUARE","OPENCURLY","CLOSECURLY","COMMA",\
 				"NEWLINE","SPACES","UNKNOWN") 
 #Direct Replacemet
@@ -168,15 +168,20 @@ def t_ISDIVISIBLE(t):
 	print("<boolStr>",end="")
 	addToLine(("boolStr","d"))
 
+def t_ISMULTIPLE(t):
+	r'is\s+a\smultiple\s+of'
+	print("<boolStr>",end="")
+	addToLine(("boolStr","#m"))
+
 def t_ISPRIME(t):
 	r'is\s+prime'
 	print("<boolStr>",end="")
-	addToLine(("boolStr","p"))
+	addToLine(("boolStr","#p"))
 
 def t_ISFACTOR(t):
 	r'is\s+a\s+factor\s+of'
 	print("<boolStr>",end="")
-	addToLine(("boolStr","f"))
+	addToLine(("boolStr","#f"))
 
 def t_ASSIGNMENT(t):
 	r'set|[Aa]ssign|initiali[zs]e|[Aa]ccept'
@@ -243,10 +248,6 @@ def t_ELSE(t):
 
 
 #Mid level Stuff
-def t_BOOLSTRINGS(t):
-	r'is\s+divisible\s+by|is\s+a\smultiple\s+of'
-	print("<boolStr>",end="")
-	addToLine(("boolStr",t.value))
 
 def t_BOOLOPERATOR(t):
 	r'>=|<=|!=|<|>|==|[Ee]quals|[aA]nd|[oO]r|[Nn]ot\s+equal\s+to'

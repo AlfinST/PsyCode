@@ -22,7 +22,8 @@ with open("Temp.c","w") as OPFile:
 with open("Temp.c","r") as FinalF:
     Lines = FinalF.readlines()
     for line in Lines:
-        if line == "\n":
+        tline = line.rstrip('\t')
+        if tline == "\n":
             continue
         else:
             print(line,end="")

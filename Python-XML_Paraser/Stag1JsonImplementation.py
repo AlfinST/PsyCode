@@ -125,7 +125,7 @@ def t_ISDIVISIBLE(t):
 def t_ISMULTIPLE(d):
 	r'is\s+a\s+multiple\s+of'
 	print("<boolStr>",end="")
-	addToLine("boolStr","#m")
+	addToLine(("boolStr","#m"))
 
 def t_ISPRIME(t):
 	r'is\s+prime'

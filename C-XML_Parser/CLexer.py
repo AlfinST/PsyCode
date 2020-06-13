@@ -26,8 +26,8 @@ def addToTable():
 	jsonLine=list()
 	jsonObj.append(objDict)
 
-tokens = ("MAIN","VARDEFINE","DECLARATION","WHILE","TYPE","INPUT","INCREMENT","DECREMENT","ISGEQ","ISGREATER","ISLEQ","ISLESSER","ISDIVISIBLE","ISMULTIPLE","ISPRIME","ISFACTOR",\
-		"ASSIGNMENT","PRINT","RETURN","FUNCTIONDEF","FUNCTIONCALL","PROGRAM","IF","ELSEIF","ELSE","EQUAL","BOOLOPERATOR",\
+tokens = ("MAIN","FUNCTIONDEF","VARDEFINE","DECLARATION","WHILE","TYPE","INPUT","INCREMENT","DECREMENT","ISGEQ","ISGREATER","ISLEQ","ISLESSER","ISDIVISIBLE","ISMULTIPLE","ISPRIME","ISFACTOR",\
+		"ASSIGNMENT","PRINT","RETURN","FUNCTIONCALL","PROGRAM","IF","ELSEIF","ELSE","EQUAL","BOOLOPERATOR",\
 			"OPERATOR","CONSTANT","STRING","IDENTIFIERS","OPENSQUARE","CLOSESQUARE","OPENCURLY","CLOSECURLY","COMMA",\
 				"NEWLINE","SPACES","UNKNOWN") 
 #Direct Replacemet
@@ -38,9 +38,29 @@ def t_MAIN(t):
 	setSemantics("main")
 	addToLine(("main","main"))
 
+def t_FUNCTIONDEF(t):
+	r'(int|float|char|string|void)\s*[a-zA-Z][a-zA-Z0-9_]*\s*\('
+	print("<function>")
+	ip = t.value[:-1].split()
+	ret_type = ip[0]
+	fname = ip[1]
+	setSemantics("function")
+	addToLine(("Return_Type",ret_type))
+	addToLine(("function_name",fname))
+
+def t_ARGSDEF(t):
+	r'(,?(int|float|char|double)\s+[a-zA-Z][a-zA-Z0-9_]*)+\)'
+	print("<ARGS_var_declaration>")
+	ip = t.value[:-1]
+	ip = ip.split(",")
+	for arg in ip:
+		arg = arg.split()
+		var_typ = arg[0]
+		var_name = arg[1] 
+		addToLine(("args",var_typ,[var_name]))
+
 def t_VARDEFINE(t):
 	r'^(?:int|float|char)\s+(?:\s*,?[a-zA-Z][a-zA-Z0-9_]*\s*(?:=\s*.*)?)*'
-	# r'(?:int|float|char)\s+(?:\s*,?[a-zA-Z][a-zA-Z0-9_]*\s*=\s*[\d\w\'\.]+|,?[a-zA-Z][a-zA-Z0-9_]*)*'
 	print("<var_define>")
 	print("original:",t.value)
 	ip = t.value.split()
@@ -68,6 +88,7 @@ def t_VARDEFINE(t):
 	addToLine(("Assign_List",assign_list))
 	if len(declare_list)>0 and len(assign_list) == 0:
 		addToTable() 
+
 def t_DECLARATION(t):
 	r'(?:[Dd]eclare\s+)?(?:a|an)?\s*(?:int|[Ii]ntegers?|Floats?|floats?|chars?|[cC]haracters?)\s+(?:variables?|arrays?)?\s*([a-zA-Z][a-zA-Z0-9_]*(?:\[\d+\])?)(?:(?:\s*(?:,|and)\s*)?([a-zA-Z][a-zA-Z0-9_]*(?:\[\d+\])?))*'
 	print("<var_declaration>")
@@ -164,7 +185,7 @@ def t_ISLESSER(t):
 	addToLine(("boolOp","l"))
 
 def t_ISDIVISIBLE(t):
-	r'is\s+divisible\s+by|is\s+a\s+multiple\s+of'
+	r'is\s+divisible\s+by'
 	print("<boolStr>",end="")
 	addToLine(("boolStr","d"))
 
@@ -201,18 +222,9 @@ def t_RETURN(t):
 	setSemantics("return")
 
 #Top level stuff
-def t_FUNCTONDEF(t):
-	r'(int|float|char|string)\s*[a-zA-Z][a-zA-Z0-9_]*\s*\(.*\)'
-	ip = t.value[:-1]
-	ip =ip.split("(")
-	args = ip[1]
-	ip = ip[0].split()
-	ret_type = ip[0]
-	fname = ip[1]
-	setSemantics("function")
-	addToLine(("Return_Type",ret_type))
-	addToLine(("function_name",fname))
-	addToLine(("Arguments",args))
+
+	# addToLine(("Arguments",args))
+
 
 def t_FUNCTIONCALL(t):
 	r'[a-zA-Z][0-9a-zA-Z_]*\('

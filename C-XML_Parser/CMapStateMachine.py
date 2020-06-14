@@ -192,8 +192,12 @@ def FunctionDef(current,line):
     print("</function>")
 
 def Function(current,line,source=None):
+
     print("<function_call>")
     function_name = line[current][1]
+    var_type = SymTab("get",function_name)
+    if source == 'print':
+        print("<variable_type>{}</variable_type>".format(var_type))
     print("<function_name>{}</function_name>".format(function_name))
     print("<args>")
     expression(current,line,"args")

@@ -26,7 +26,7 @@ def addToTable():
 	jsonLine=list()
 	jsonObj.append(objDict)
 
-tokens = ("MAIN","FUNCTIONDEF","VARDEFINE","DECLARATION","WHILE","TYPE","INPUT","INCREMENT","DECREMENT","ISGEQ","ISGREATER","ISLEQ","ISLESSER","ISDIVISIBLE","ISMULTIPLE","ISPRIME","ISFACTOR",\
+tokens = ("MAIN","FUNCTIONDEF","ARGSDEF","VARDEFINE","DECLARATION","WHILE","TYPE","INPUT","INCREMENT","DECREMENT","ISGEQ","ISGREATER","ISLEQ","ISLESSER","ISDIVISIBLE","ISMULTIPLE","ISPRIME","ISFACTOR",\
 		"ASSIGNMENT","PRINT","RETURN","FUNCTIONCALL","PROGRAM","IF","ELSEIF","ELSE","EQUAL","BOOLOPERATOR",\
 			"OPERATOR","CONSTANT","STRING","IDENTIFIERS","OPENSQUARE","CLOSESQUARE","OPENCURLY","CLOSECURLY","COMMA",\
 				"NEWLINE","SPACES","UNKNOWN") 
@@ -51,16 +51,20 @@ def t_FUNCTIONDEF(t):
 def t_ARGSDEF(t):
 	r'(,?(int|float|char|double)\s+[a-zA-Z][a-zA-Z0-9_]*)+\)'
 	print("<ARGS_var_declaration>")
+	print(t.value)
 	ip = t.value[:-1]
 	ip = ip.split(",")
+	print(ip)
 	for arg in ip:
+		if arg == '':
+			continue
 		arg = arg.split()
 		var_typ = arg[0]
 		var_name = arg[1] 
 		addToLine(("args",var_typ,[var_name]))
 
 def t_VARDEFINE(t):
-	r'^(?:int|float|char)\s+(?:\s*,?[a-zA-Z][a-zA-Z0-9_]*\s*(?:=\s*.*)?)*'
+	r'(int|float|char)\s+(\s*,?[a-zA-Z][a-zA-Z0-9_]*\s*(=.+)?)+'
 	print("<var_define>")
 	print("original:",t.value)
 	ip = t.value.split()
@@ -72,30 +76,24 @@ def t_VARDEFINE(t):
 	assign_list = []
 	declare_list = []
 	someexp = r'[a-zA-Z][a-zA-Z0-9_]*\s*=\s*(?:.)+,?'
-
 	for substr in string:
-		# print(substr)
 		if re.match(someexp,substr.lstrip()):
 			assign_list.append(substr)
-			# print("assign:",substr)
 		else:
-			# print(substr)
 			declare_list.append(substr)
-			# print("NOassign:",substr)
-	# print(declare_list)
 	setSemantics("Definition")
 	addToLine(("NoAssign_List",declare_list))
 	addToLine(("Assign_List",assign_list))
 	if len(declare_list)>0 and len(assign_list) == 0:
-		addToTable() 
+		addToTable()
 
 def t_DECLARATION(t):
-	r'(?:[Dd]eclare\s+)?(?:a|an)?\s*(?:int|[Ii]ntegers?|Floats?|floats?|chars?|[cC]haracters?)\s+(?:variables?|arrays?)?\s*([a-zA-Z][a-zA-Z0-9_]*(?:\[\d+\])?)(?:(?:\s*(?:,|and)\s*)?([a-zA-Z][a-zA-Z0-9_]*(?:\[\d+\])?))*'
+	r'[Dd]eclare\s+(?:a|an)?\s*(?:int|[Ii]ntegers?|Floats?|floats?|chars?|[cC]haracters?)\s+(?:variables?|arrays?)?\s*([a-zA-Z][a-zA-Z0-9_]*(?:\[\d+\])?)(?:(?:\s*(?:,|and)\s*)?([a-zA-Z][a-zA-Z0-9_]*(?:\[\d+\])?))*'
 	print("<var_declaration>")
 	ip = t.value
+	# print(ip)
 	ip = ip.replace(","," , ")
 	ip = ip.split()
-
 	sem = "Declaration"
 	start = 0
 	if ip[0].lower() == "declare":
@@ -116,10 +114,13 @@ def t_DECLARATION(t):
 	setSemantics(sem)
 	addToLine(("Type",Type))
 	addToLine(("VarList",var_list))
-	
+
+
 def t_VAR(t):
 	r'[vV]ariable|of'
 	print("",end="")
+
+
 
 def t_WHILE(t):
 	r'while'

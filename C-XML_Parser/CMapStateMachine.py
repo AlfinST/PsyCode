@@ -181,12 +181,10 @@ def FunctionDef(current,line):
         var_type = line[i][1] 
         SymTab("add",var_name,var_type)
         print("<expression>")
-        print("<var_declare>")
         print("<variable_type>{}</variable_type>".format(var_type))
         print("<variable>")
         print("<variable_name>{}</variable_name>".format(var_name[0]))
         print("</variable>")
-        print("</var_declare>")
         print("</expression>")
     print("</args>")
     print("</function>")

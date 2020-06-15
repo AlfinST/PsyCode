@@ -39,11 +39,15 @@ def t_MAIN(t):
 	addToLine(("main","main"))
 
 def t_FUNCTIONDEF(t):
-	r'(int|float|char|string|void)\s*[a-zA-Z][a-zA-Z0-9_]*\s*\('
+	r'([Ff]unction\s*)?(int|float|char|string|void)\s*[a-zA-Z][a-zA-Z0-9_]*\s*\('
 	print("<function>")
 	ip = t.value[:-1].split()
-	ret_type = ip[0]
-	fname = ip[1]
+	if ip[0].lower() == "function":
+		ret_type = ip[1]
+		fname = ip[2]
+	else:
+		ret_type = ip[0]
+		fname = ip[1]
 	setSemantics("function")
 	addToLine(("Return_Type",ret_type))
 	addToLine(("function_name",fname))
@@ -196,7 +200,7 @@ def t_ISMULTIPLE(t):
 	addToLine(("boolStr","#m"))
 
 def t_ISPRIME(t):
-	r'is\s+prime'
+	r'is\s+(a\s+)?prime(\s+number)?'
 	print("<boolStr>",end="")
 	addToLine(("boolStr","#p"))
 

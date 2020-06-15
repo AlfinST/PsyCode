@@ -174,6 +174,7 @@ def FunctionDef(current,line):
     ret_type = line[current][1]
     function_name = line[current+1][1]
     SymTab("add",[function_name],ret_type)
+    print("<variable_type>{}</variable_type>".format(ret_type))
     print("<function_name>{}</function_name>".format(function_name))
     print("<args>")
     for i in range(2,len(line)):

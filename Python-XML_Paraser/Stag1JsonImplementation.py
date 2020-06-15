@@ -42,7 +42,7 @@ def t_VAR(t):
 	print("",end="")
 
 def t_DECLARE_FILTER(t):
-	r'([Dd]eclare.*|(int|float|char).*)'
+	r'([Dd]eclare.*|(int|float|char|double|long).*)'
 	print("ignored")
 
 def t_BREAK(t):
